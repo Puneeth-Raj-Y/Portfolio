@@ -9,21 +9,34 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body class="loading">
 
-  <!-- Holistic Animations -->
+  <!-- Robotic Entry Loader -->
   <div id="loader">
+    <div class="loader-visual">
+      <div class="robotic-eye-wrap">
+        <div class="loading-ring-3d">
+          <div class="ring ring-x"></div>
+          <div class="ring ring-y"></div>
+          <div class="ring ring-z"></div>
+        </div>
+      </div>
+      <div class="hud-frame">
+        <span class="hud-corner top-left"></span>
+        <span class="hud-corner top-right"></span>
+        <span class="hud-corner bottom-left"></span>
+        <span class="hud-corner bottom-right"></span>
+      </div>
+    </div>
     <div class="loader-content">
-      <div class="loader-text" data-text="SYSTEM_INIT...">SYSTEM_INIT...</div>
       <div class="loader-bar">
         <div class="loader-progress"></div>
       </div>
-      <div class="loader-status">DECRYPTING_PORTFOLIO_DATA...</div>
     </div>
   </div>
 

@@ -14,17 +14,42 @@ document.addEventListener('DOMContentLoaded', () => {
   if (loader && loaderProgress) {
     let progress = 0;
     const interval = setInterval(() => {
-      progress += Math.floor(Math.random() * 15) + 5;
+      progress += Math.floor(Math.random() * 10) + 2;
       if (progress >= 100) {
         progress = 100;
         clearInterval(interval);
         setTimeout(() => {
           loader.classList.add('fade-out');
           body.classList.remove('loading');
-        }, 600);
+        }, 1200);
       }
       loaderProgress.style.width = `${progress}%`;
     }, 120);
+  }
+
+  // ==============================
+  // 3D HERO TILT & OPTIC SYNC
+  // ==============================
+  const heroName = document.querySelector('.hero-name');
+
+  window.addEventListener('mousemove', (e) => {
+    const xRel = (e.clientX / window.innerWidth - 0.5);
+    const yRel = (e.clientY / window.innerHeight - 0.5);
+
+    // Hero name advanced 3D tilt
+    if (heroName) {
+      const tiltX = yRel * 25; // increased for depth
+      const tiltY = -xRel * 25;
+      heroName.style.transform = `perspective(2000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.05, 1.05, 1.05)`;
+    }
+  });
+
+  // Small glitch burst on startup
+  if (heroName) {
+    setTimeout(() => {
+      heroName.classList.add('glitch-burst');
+      setTimeout(() => heroName.classList.remove('glitch-burst'), 500);
+    }, 2000);
   }
 
   // ==============================
@@ -307,8 +332,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==============================
   // PARALLAX TILT FOR CARDS
   // ==============================
-  const tiltCards = document.querySelectorAll('.skill-card, .project-card, .hobby-card, .contact-card, .timeline-card');
-  tiltCards.forEach(card => {
+  const tiltCards = document.querySelectorAll('.skill-card, .project-card, .hobby-card, .contact-card, .timeline-card, .terminal');
+   tiltCards.forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -317,28 +342,26 @@ document.addEventListener('DOMContentLoaded', () => {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      const rotateX = ((y - centerY) / centerY) * 5; // max 5deg
-      const rotateY = ((centerX - x) / centerX) * 5;
+      const rotateX = ((y - centerY) / centerY) * 10;
+      const rotateY = ((centerX - x) / centerX) * 10;
 
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+      card.style.transform = `perspective(1500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(30px)`;
       card.style.setProperty('--mouse-x', `${x}px`);
       card.style.setProperty('--mouse-y', `${y}px`);
     });
 
     card.addEventListener('mouseleave', () => {
-      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)`;
+      card.style.transform = `perspective(1500px) rotateX(0deg) rotateY(0deg) translateZ(0)`;
     });
   });
 
   // ==============================
   // RANDOM GLITCH BURST ON NAME
   // ==============================
-  const heroName = document.querySelector('.hero-name');
   if (heroName) {
     setInterval(() => {
       heroName.classList.add('glitch-burst');
       setTimeout(() => heroName.classList.remove('glitch-burst'), 200);
     }, 4500);
   }
-
 });
