@@ -113,6 +113,159 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==============================
+  // ENERGY LINES SYSTEM
+  // ==============================
+  const energyContainer = document.querySelector('.bg-energy-lines');
+  if (energyContainer) {
+    const LINE_COUNT = 8;
+    for (let i = 0; i < LINE_COUNT; i++) {
+      const line = document.createElement('div');
+      line.className = 'energy-line';
+      line.style.top = `${Math.random() * 100}%`;
+      line.style.animationDuration = `${10 + Math.random() * 20}s`;
+      line.style.animationDelay = `${Math.random() * -20}s`;
+      energyContainer.appendChild(line);
+    }
+    
+    // Add Scroll Streaks (Near Layer)
+    const STREAK_COUNT = 5;
+    for (let i = 0; i < STREAK_COUNT; i++) {
+      const streak = document.createElement('div');
+      streak.className = 'scroll-streak';
+      streak.style.top = `${Math.random() * 100}%`;
+      streak.style.left = `${Math.random() * 100}%`;
+      streak.style.width = `${100 + Math.random() * 200}px`;
+      energyContainer.appendChild(streak);
+    }
+  }
+
+  // ==============================
+  // PREMIUM SYSTEM INIT
+  // ==============================
+  
+  // Initialize layers for parallax
+  const layerFar = document.querySelector('.bg-layer.far');
+  const layerMid = document.querySelector('.bg-layer.mid');
+  const layerNear = document.querySelector('.bg-layer.near');
+  const scanSystem = document.querySelector('.bg-scan-system');
+
+  // 1. Holographic Panels (Mid)
+  const holoField = document.querySelector('.bg-holographic-field');
+  if (holoField) {
+    for (let i = 0; i < 5; i++) {
+      const panel = document.createElement('div');
+      panel.className = 'holo-panel';
+      const size = 100 + Math.random() * 150;
+      panel.style.width = `${size}px`;
+      panel.style.height = `${size * 0.6}px`;
+      panel.style.top = `${Math.random() * 100}%`;
+      panel.style.left = `${Math.random() * 100}%`;
+      panel.style.animationDelay = `${Math.random() * -30}s`;
+      holoField.appendChild(panel);
+    }
+  }
+
+  // 2. Neon Atom System (Mid)
+  const atomSystem = document.querySelector('.bg-atom-system');
+  if (atomSystem) {
+    const ATOM_COUNT = 6;
+    for (let i = 0; i < ATOM_COUNT; i++) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'bg-atom-wrapper';
+      wrapper.style.top = `${10 + Math.random() * 80}%`;
+      wrapper.style.left = `${10 + Math.random() * 80}%`;
+      wrapper.style.animationDelay = `${Math.random() * -20}s`;
+      
+      const atom = document.createElement('div');
+      atom.className = 'bg-atom';
+      
+      const core = document.createElement('div');
+      core.className = 'atom-core';
+      atom.appendChild(core);
+      
+      const ring1 = document.createElement('div');
+      ring1.className = 'atom-ring';
+      ring1.style.animationDelay = `${Math.random() * -10}s`;
+      atom.appendChild(ring1);
+      
+      const ring2 = document.createElement('div');
+      ring2.className = 'atom-ring';
+      ring2.style.animationDelay = `${Math.random() * -15}s`;
+      atom.appendChild(ring2);
+      
+      wrapper.appendChild(atom);
+      atomSystem.appendChild(wrapper);
+    }
+  }
+
+  // 3. Glitch Strips (Near)
+  const glitchContainer = document.querySelector('.bg-glitch-strips');
+  if (glitchContainer) {
+    for (let i = 0; i < 4; i++) {
+      const strip = document.createElement('div');
+      strip.className = 'glitch-strip';
+      strip.style.top = `${Math.random() * 100}%`;
+      glitchContainer.appendChild(strip);
+    }
+    setInterval(() => {
+      const strips = document.querySelectorAll('.glitch-strip');
+      const target = strips[Math.floor(Math.random() * strips.length)];
+      if (target) {
+        target.classList.add('glitch-flash');
+        setTimeout(() => target.classList.remove('glitch-flash'), 400);
+      }
+    }, 5000 + Math.random() * 5000); // Slower, more premium timing
+  }
+
+  // 4. Hierarchy Parallax & Interaction (Enhanced for Clouds & Atoms)
+  window.addEventListener('mousemove', (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    const xRel = (x / window.innerWidth - 0.5);
+    const yRel = (y / window.innerHeight - 0.5);
+
+    // Subtle hierarchy shift
+    if (layerFar) layerFar.style.transform = `translate(${xRel * 10}px, ${yRel * 10}px)`;
+    if (layerMid) layerMid.style.transform = `translate(${xRel * 25}px, ${yRel * 25}px)`;
+    if (layerNear) layerNear.style.transform = `translate(${xRel * 50}px, ${yRel * 50}px)`;
+
+    // Atom 3D Tilt
+    const atoms = document.querySelectorAll('.bg-atom');
+    atoms.forEach(atom => {
+      atom.style.transform = `translateY(${yRel * 20}px) rotateX(${yRel * 20}deg) rotateY(${xRel * 20}deg)`;
+    });
+
+    // Scan system distortion ripple
+    if (scanSystem) {
+      scanSystem.style.transform = `perspective(1000px) rotateX(${60 + yRel * 10}deg) rotateZ(${45 + xRel * 10}deg)`;
+    }
+  }, { passive: true });
+
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    const scroll = window.pageYOffset;
+    
+    // Add scroll-active class for intensity shift
+    const master = document.querySelector('.bg-system-master');
+    if (master) {
+      master.classList.add('scroll-active');
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => master.classList.remove('scroll-active'), 150);
+    }
+
+    // Scroll-based depth
+    if (layerFar) layerFar.style.transform += ` translateY(${scroll * 0.05}px)`;
+    if (layerMid) layerMid.style.transform += ` translateY(${scroll * 0.12}px)`;
+    if (layerNear) layerNear.style.transform += ` translateY(${scroll * 0.2}px)`;
+    
+    // Scan speed variation
+    if (scanSystem) {
+      const speed = 40 / (1 + scroll * 0.001);
+      scanSystem.style.animationDuration = `${speed}s`;
+    }
+  }, { passive: true });
+
+  // ==============================
   // DATA STREAMS (Binary)
   // ==============================
   const STREAM_COUNT = 15;
@@ -172,13 +325,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createParticle() {
+      const colors = ['#00f2ff', '#bc13fe', '#ffffff', '#00ffff'];
       return {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: Math.random() * 1.5 + 0.5,
-        speedX: (Math.random() - 0.5) * 0.3,
-        speedY: (Math.random() - 0.5) * 0.3,
-        opacity: Math.random() * 0.4 + 0.1
+        size: Math.random() * 1.8 + 0.5,
+        speedX: (Math.random() - 0.5) * 0.4,
+        speedY: (Math.random() - 0.5) * 0.4,
+        opacity: Math.random() * 0.5 + 0.2,
+        color: colors[Math.floor(Math.random() * colors.length)]
       };
     }
 
@@ -194,8 +349,16 @@ document.addEventListener('DOMContentLoaded', () => {
       particles.forEach((p, i) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.opacity;
+        
+        // Add subtle glow
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = p.color;
+        
         ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
 
         p.x += p.speedX;
         p.y += p.speedY;
@@ -238,6 +401,14 @@ document.addEventListener('DOMContentLoaded', () => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
+        
+        // Background Pulse on Reveal
+        document.body.style.transition = 'background 0.5s ease';
+        document.body.style.background = 'rgba(20, 20, 20, 1)';
+        setTimeout(() => {
+          document.body.style.background = '';
+        }, 500);
+
         sectionObserver.unobserve(entry.target);
       }
     });
